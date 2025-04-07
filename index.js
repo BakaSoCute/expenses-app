@@ -1,4 +1,4 @@
-const LIMIT = 10000;
+let LIMIT = 10000;
 const CURRENCY = " руб.";
 const STATUS_IN_LIMIT = "ВСЁ ХОРОШО";
 const STATUS_OUT_OF_LIMIT = "ВСЁ ПЛОХО";
@@ -10,8 +10,11 @@ const historyNode = document.getElementById("history")
 const sumNode = document.getElementById("sum");
 const limitNode = document.getElementById("limit");
 const statusNode = document.getElementById("status");
-
-const expenses = [];
+const resetHistoryNode = document.getElementById("resetHistory"); 
+const changeLimitNode = document.getElementById("changeLimit");
+const inputLimitNode = document.getElementById("popup__input");
+const resetLimitNode = document.getElementById("popup__button");
+let expenses = [];
 
 init(expenses);
 
@@ -29,6 +32,20 @@ buttonNode.addEventListener("click", function () {
     render(expenses)
 
 });
+resetHistoryNode.addEventListener("click", function() {
+    expenses = [];
+    updateDisplay();
+    historyNode.innerText = "";
+});
+resetLimitNode.addEventListener("click", function() {
+    const resetlimit = inputLimitNode.value;
+    limitNode.innerText = `${resetlimit}`;
+    LIMIT = `${resetlimit}`;
+});
+function updateDisplay() {
+    const total = expenses.reduce((acc, expense) => acc + expense, 0);
+    sumNode.innerText = `${total}`;
+}
 
 function init(expenses) {
     limitNode.innerText = LIMIT;

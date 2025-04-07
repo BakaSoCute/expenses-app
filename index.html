@@ -11,16 +11,28 @@
         <h1>Учёт расходов</h1>
         <input type="number" class="input" id="input">
         <button class="butt" id="butt" >Добавить</button>
-
-        <p>Лимит:<span id="limit"></span>руб.</p>
+        <div class="changeLimit_wrapper"> 
+            <p>Лимит:<span id="limit"></span>руб.</p>
+            <button id="changeLimit" class="changeLimit"></button>
+        </div>
+        <div id="popup" class="popup">
+            <div id="popup__content" class="popup__content">
+                <h2>Новый лимит</h2>
+                <input id="popup__input" class="popup__input" type="number">
+                <button id="popup__button" class="popup__button">Задать лимит</button>
+            </div>
+        </div>
+       
         <p>Сумма:<span id="sum"></span>руб.</p>
         <p>Статус:<span class="status" id="status"></span></p>
-        
+
         <h2>История</h2>
         <div class="history" id="history"></div>
+        <button id="resetHistory" class="resetHistory">Сбросить историю</button>
     </div>
 
 
     <script src="index.js"></script>
+    <script src="popup.js"></script>
 </body>
 </html>
