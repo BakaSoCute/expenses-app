@@ -9,8 +9,19 @@
 <body>
     <div>
         <h1>Учёт расходов</h1>
-        <input type="number" class="input" id="input">
-        <button class="butt" id="butt" >Добавить</button>
+        <div class="input_wrapper">
+            <input type="number" class="input" id="input">
+            <select id="select" class="select">
+                <option hidden disabled selected value="Категория">Категория</option>
+                <option value="Кафе">Кафе</option>
+                <option value="Продукты">Продукты</option>
+                <option value="Квартиры">Квартиры</option>
+                <option value="Авто">Авто</option>
+            </select>
+            <button class="butt" id="butt" >Добавить</button>
+        </div>
+        
+
         <div class="changeLimit_wrapper"> 
             <p>Лимит:<span id="limit"></span>руб.</p>
             <button id="changeLimit" class="changeLimit"></button>

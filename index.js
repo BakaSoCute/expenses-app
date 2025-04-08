@@ -14,6 +14,7 @@ const resetHistoryNode = document.getElementById("resetHistory");
 const changeLimitNode = document.getElementById("changeLimit");
 const inputLimitNode = document.getElementById("popup__input");
 const resetLimitNode = document.getElementById("popup__button");
+const selectNode = document.getElementById("select");
 let expenses = [];
 
 init(expenses);
@@ -34,11 +35,17 @@ buttonNode.addEventListener("click", function () {
 });
 resetHistoryNode.addEventListener("click", function() {
     expenses = [];
+    const sum = calculateExpanses(expenses);
     updateDisplay();
     historyNode.innerText = "";
+    init(expenses);
+    renderStatus(sum);
 });
 resetLimitNode.addEventListener("click", function() {
     const resetlimit = inputLimitNode.value;
+    const sum = calculateExpanses(expenses);
+    init(expenses);
+    renderStatus(sum);
     limitNode.innerText = `${resetlimit}`;
     LIMIT = `${resetlimit}`;
 });
@@ -81,9 +88,10 @@ function render(expenses) {
 }
 function renderHistory(expenses) {
     let expensesListHTML = "";
+    const select = selectNode.value
 
     expenses.forEach(element =>{
-        expensesListHTML += `<li>${element},${CURRENCY}</li>`;
+        expensesListHTML += `<li>${select},${element},${CURRENCY}</li>`;
     });
     historyNode.innerHTML = `<ol>${expensesListHTML}</ol>`;
 };
@@ -93,6 +101,8 @@ function renderSum(sum) {
 function renderStatus(sum) {
     if (sum <=  LIMIT) {
         statusNode.innerText = STATUS_IN_LIMIT;
+        
+        statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
     } else {
         statusNode.innerText = STATUS_OUT_OF_LIMIT;
         statusNode.classList.add(STATUS_OUT_OF_LIMIT_CLASSNAME);
