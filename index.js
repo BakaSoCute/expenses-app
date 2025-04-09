@@ -42,13 +42,18 @@ resetHistoryNode.addEventListener("click", function() {
     renderStatus(sum);
 });
 resetLimitNode.addEventListener("click", function() {
-    const resetlimit = inputLimitNode.value;
-    const sum = calculateExpanses(expenses);
-    init(expenses);
-    renderStatus(sum);
-    limitNode.innerText = `${resetlimit}`;
-    LIMIT = `${resetlimit}`;
+    const resetlimit = parseInt(inputLimitNode.value);
+    if (!isNaN(resetlimit)) {
+        LIMIT = resetlimit;
+        limitNode.innerText = `${LIMIT}`;
+        const sum = calculateExpanses(expenses);
+        renderStatus(sum);
+    }
+    
 });
+    function getSelectedCategory () {
+        return selectNode.value;
+    };
 function updateDisplay() {
     const total = expenses.reduce((acc, expense) => acc + expense, 0);
     sumNode.innerText = `${total}`;
@@ -66,17 +71,26 @@ function getExpanceFromUser() {
     if (inputNode.value === "") {
         return null;
     };
-    const expense = parseInt(inputNode.value);
+    const select = getSelectedCategory();
+    if (select === "Категория") {
+        return;
+    };
+    const expenseNumber = parseInt(inputNode.value);
+    if (isNaN(expenseNumber)) {
+        return null;
+    }
+    const expense = {amount: expenseNumber, category: select};
+    console.log(expense)
     clearInput();
     return expense;
-}
+} 
 function clearInput() {
     inputNode.value = "";
 }
 function calculateExpanses(expenses) {
     let sum = 0;
     expenses.forEach(element =>{
-        sum += element;
+        sum += element.amount;
     });
     return sum;
 }
@@ -88,10 +102,9 @@ function render(expenses) {
 }
 function renderHistory(expenses) {
     let expensesListHTML = "";
-    const select = selectNode.value
 
     expenses.forEach(element =>{
-        expensesListHTML += `<li>${select},${element},${CURRENCY}</li>`;
+        expensesListHTML += `<li>${element.amount} ${CURRENCY} - ${element.category} </li>`;
     });
     historyNode.innerHTML = `<ol>${expensesListHTML}</ol>`;
 };
@@ -104,7 +117,7 @@ function renderStatus(sum) {
         
         statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
     } else {
-        statusNode.innerText = STATUS_OUT_OF_LIMIT;
+        statusNode.innerText = `${STATUS_OUT_OF_LIMIT} (${LIMIT - sum} руб)`;
         statusNode.classList.add(STATUS_OUT_OF_LIMIT_CLASSNAME);
-    }
-}
+    };
+};
