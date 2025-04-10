@@ -3,6 +3,8 @@ const CURRENCY = " руб.";
 const STATUS_IN_LIMIT = "ВСЁ ХОРОШО";
 const STATUS_OUT_OF_LIMIT = "ВСЁ ПЛОХО";
 const STATUS_OUT_OF_LIMIT_CLASSNAME = "status_red";
+const STORAGE_LABEL_LIMIT = "limits";
+const STORAGE_LABEL_EXPANSES = "expenses";
 
 const inputNode = document.getElementById("input");
 const buttonNode = document.getElementById("butt");
@@ -16,8 +18,10 @@ const inputLimitNode = document.getElementById("popup__input");
 const resetLimitNode = document.getElementById("popup__button");
 const selectNode = document.getElementById("select");
 let expenses = [];
+let limit = parseInt(limitNode.innerText);
 
 init(expenses);
+initLocalStorageExpenses();
 
 
 
@@ -29,6 +33,7 @@ buttonNode.addEventListener("click", function () {
     return;
    }
    trackExpance(expense);
+   saveExpensesScore();
 
     render(expenses)
 
@@ -49,9 +54,23 @@ resetLimitNode.addEventListener("click", function() {
         const sum = calculateExpanses(expenses);
         renderStatus(sum);
     }
-    
+    localStorage.setItem(STORAGE_LABEL_LIMIT, resetlimit);
 });
-    function getSelectedCategory () {
+function saveExpensesScore() {
+    const expensesString = JSON.stringify(expenses);
+    localStorage.setItem(STORAGE_LABEL_EXPANSES, expensesString);
+}
+
+function initLimit () {
+    const limitFromStarage = parseInt(localStorage.getItem(STORAGE_LABEL_LIMIT));
+    if (!limitFromStarage) {
+        return;
+    }
+    limitNode.innerText = limitFromStarage;
+    limit = parseInt(limitNode.innerText)
+}
+initLimit()
+function getSelectedCategory () {
         return selectNode.value;
     };
 function updateDisplay() {
@@ -63,7 +82,17 @@ function init(expenses) {
     limitNode.innerText = LIMIT;
     statusNode.innerText = STATUS_IN_LIMIT;
     sumNode.innerText = calculateExpanses(expenses);
+    // expenses = initLocalStorageExpenses(expenses);
 }
+function initLocalStorageExpenses() {
+    const expensesFromStorageString = localStorage.getItem(STORAGE_LABEL_EXPANSES);
+    const expensesFromStorage = JSON.parse(expensesFromStorageString);
+    if (Array.isArray(expensesFromStorage)) {
+        expenses = expensesFromStorage;
+    }
+    render(expenses);
+}
+
 function trackExpance(expense) {
     expenses.push(expense);
 }
